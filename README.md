@@ -1,0 +1,1 @@
+query chekcer  middlware for koa
