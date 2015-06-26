@@ -11,6 +11,7 @@
     "connection limit",
     "middlware"
   ],
+  "main" : "./lib/checker",
   "license": "MIT",
   "repository": {
     "type": "git",
