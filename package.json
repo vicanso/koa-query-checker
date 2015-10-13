@@ -8,7 +8,7 @@
   },
   "keywords": [
     "koa",
-    "connection limit",
+    "query checker",
     "middlware"
   ],
   "main": "./lib/checker",
