@@ -1,4 +1,4 @@
-# query checker  middlware for koa
+# query checker middlware for koa
 
 
 ## Installation
