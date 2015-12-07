@@ -10,9 +10,9 @@ $ npm install koa-query-checker
 ## API
 
 ```js
-var koa = require('koa');
+var Koa = require('koa');
 var koaQueryChecker = require('koa-query-checker');
-var app = koa();
+var app = new Koa();
 app.use(koaQueryChecker('cache=false'));
 ```
 
