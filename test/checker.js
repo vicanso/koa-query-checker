@@ -1,29 +1,54 @@
-"use strict";
+'use strict';
 const assert = require('assert');
-const koa = require('koa');
-const router = require('koa-router')();
+const Koa = require('koa');
+const request = require('supertest');
 const koaQueryChecker = require('../lib/checker');
-const request = require('superagent');
-const http = require('http');
 
-describe('koa-query-checker', function () {
-  it('should set query checker successful', function (done) {
-    let app = koa();
-    app.use(koaQueryChecker('cache=false'));
-    router.get('/', function () {
-      this.body = 'OK';
-    });
-    app.use(router.routes());
-    let port = process.env.PORT || 10000;
-    let httpServer = http.createServer(app.callback()).listen(port);
-    console.info('server listen on:' + port);
-    let url = 'http://localhost:' + port + '/';
-    request.get(url).end(function (err,
-      res) {
-      let redirectUrl = url + '?cache=false';
-      assert.equal(res.redirects.join(''), redirectUrl);
-      done();
-      httpServer.close();
-    });
-  });
+
+describe('koa-query-checker', function() {
+	it('should throw error when checkQuery is null', function(done) {
+		try {
+			koaQueryChecker();
+		} catch (err) {
+			assert.equal(err.message, 'check query can not be null');
+			done();
+		}
+	});
+
+	it('should set query checker successful', function(done) {
+		const app = new Koa();
+		app.use(koaQueryChecker('cache=false'));
+
+		request(app.listen())
+			.get('/user')
+			.end(function(err, res) {
+				if (err) {
+					done(err);
+				} else {
+					assert.equal(res.status, 302);
+					assert.equal(res.headers.location, '/user?cache=false');
+					done();
+				}
+			});
+	});
+
+	it('should pass query checker successful', function(done) {
+		const app = new Koa();
+		app.use(koaQueryChecker('cache=false'));
+		app.use((ctx) => {
+			ctx.body = 'OK';
+		});
+		request(app.listen())
+			.get('/user?cache=false')
+			.end(function(err, res) {
+				if (err) {
+					done(err);
+				} else {
+					assert.equal(res.status, 200);
+					assert.equal(res.text, 'OK');
+					done();
+				}
+			});
+	});
+
 });
