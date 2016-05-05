@@ -6,49 +6,68 @@ const koaQueryChecker = require('../lib/checker');
 
 
 describe('koa-query-checker', function() {
-	it('should throw error when checkQuery is null', function(done) {
-		try {
-			koaQueryChecker();
-		} catch (err) {
-			assert.equal(err.message, 'check query can not be null');
-			done();
-		}
-	});
+  it('should throw error when checkQuery is null', done => {
+    try {
+      koaQueryChecker();
+    } catch (err) {
+      assert.equal(err.message, 'check query can not be null');
+      done();
+    }
+  });
 
-	it('should set query checker successful', function(done) {
-		const app = new Koa();
-		app.use(koaQueryChecker('cache=false'));
+  it('should set query checker successful', done => {
+    const app = new Koa();
+    app.use(koaQueryChecker('cache=false'));
 
-		request(app.listen())
-			.get('/user')
-			.end(function(err, res) {
-				if (err) {
-					done(err);
-				} else {
-					assert.equal(res.status, 302);
-					assert.equal(res.headers.location, '/user?cache=false');
-					done();
-				}
-			});
-	});
+    request(app.listen())
+      .get('/user')
+      .end(function(err, res) {
+        if (err) {
+          done(err);
+        } else {
+          assert.equal(res.status, 302);
+          assert.equal(res.headers.location, '/user?cache=false');
+          done();
+        }
+      });
+  });
 
-	it('should pass query checker successful', function(done) {
-		const app = new Koa();
-		app.use(koaQueryChecker('cache=false'));
-		app.use((ctx) => {
-			ctx.body = 'OK';
-		});
-		request(app.listen())
-			.get('/user?cache=false')
-			.end(function(err, res) {
-				if (err) {
-					done(err);
-				} else {
-					assert.equal(res.status, 200);
-					assert.equal(res.text, 'OK');
-					done();
-				}
-			});
-	});
+  it('should pass query checker successful', done => {
+    const app = new Koa();
+    app.use(koaQueryChecker('cache=false'));
+    app.use((ctx) => {
+      ctx.body = 'OK';
+    });
+    request(app.listen())
+      .get('/user?cache=false')
+      .end(function(err, res) {
+        if (err) {
+          done(err);
+        } else {
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'OK');
+          done();
+        }
+      });
+  });
+
+  it('should pass chinese query checker', done => {
+    const app = new Koa();
+    app.use(koaQueryChecker('cache=不缓存'));
+    app.use((ctx) => {
+      ctx.body = 'OK';
+    });
+    request(app.listen())
+      .get('/user?cache=%E4%B8%8D%E7%BC%93%E5%AD%98')
+      .end(function(err, res) {
+        if (err) {
+          done(err);
+        } else {
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'OK');
+          done();
+        }
+      });
+  });
 
 });
