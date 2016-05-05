@@ -1,4 +1,6 @@
-# Query checker middlware for koa. If the query string is illegal, it will redirect with the query string.
+# koa-query-checker
+
+Query checker middlware for koa. If the query string is illegal, it will redirect with the query string.
 
 [![Build Status](https://travis-ci.org/vicanso/koa-query-checker.svg?style=flat-square)](https://travis-ci.org/vicanso/koa-query-checker)
 [![Coverage Status](https://img.shields.io/coveralls/vicanso/koa-query-checker/master.svg?style=flat)](https://coveralls.io/r/vicanso/koa-query-checker?branch=master)
