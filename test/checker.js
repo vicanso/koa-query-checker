@@ -51,6 +51,28 @@ describe('koa-query-checker', function() {
       });
   });
 
+  it('should set the location successful when ctx.originaPath exists', done => {
+    const app = new Koa();
+    app.use((ctx, next) => {
+      ctx.path = ctx.path.replace('/rest', '');
+      next();
+    });
+    app.use(koaQueryChecker('cache=false'));
+    app.use((ctx) => {
+      ctx.body = 'OK';
+    });
+    request(app.listen())
+      .get('/rest/user?id=vicanso')
+      .end(function(err, res) {
+        if (err) {
+          done(err);
+        } else {
+          assert.equal(res.status, 302);
+          done();
+        }
+      });
+  });
+
   it('should pass chinese query checker', done => {
     const app = new Koa();
     app.use(koaQueryChecker('cache=不缓存'));
