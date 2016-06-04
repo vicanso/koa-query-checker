@@ -3,7 +3,11 @@ const assert = require('assert');
 const Koa = require('koa');
 const request = require('supertest');
 const koaQueryChecker = require('../lib/checker');
-
+const delay = (ms) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, ms).unref();
+  });
+};
 
 describe('koa-query-checker', function() {
   it('should throw error when checkQuery is null', done => {
@@ -36,7 +40,9 @@ describe('koa-query-checker', function() {
     const app = new Koa();
     app.use(koaQueryChecker('cache=false'));
     app.use((ctx) => {
-      ctx.body = 'OK';
+      return delay(100).then(() => {
+        ctx.body = 'OK';
+      });
     });
     request(app.listen())
       .get('/user?cache=false')
