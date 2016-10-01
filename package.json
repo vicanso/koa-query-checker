@@ -1,7 +1,7 @@
 {
   "name": "koa-query-checker",
   "description": "query chekcer middlware for koa",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "author": "Tree Xie <vicansocanbico@gmail.com>",
   "keywords": [
     "koa",
@@ -15,15 +15,6 @@
     "url": "https://github.com/vicanso/koa-query-checker.git"
   },
   "readmeFilename": "README.md",
-  "devDependencies": {
-    "eslint": "^2.9.0",
-    "eslint-config-airbnb": "^9.0.1",
-    "eslint-plugin-import": "^1.6.1",
-    "istanbul": "^0.4.3",
-    "koa": "^2.0.0",
-    "mocha": "^2.4.5",
-    "supertest": "^1.2.0"
-  },
   "scripts": {
      "test": "node ./node_modules/.bin/eslint ./lib/*.js && node ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha --"
   },
@@ -32,5 +23,16 @@
   },
   "dependencies": {
     "debug": "^2.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.6.1",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-jsx-a11y": "^2.2.2",
+    "eslint-plugin-react": "^6.3.0",
+    "istanbul": "^0.4.5",
+    "koa": "^2.0.0",
+    "mocha": "^2.5.3",
+    "supertest": "^2.0.0"
   }
 }
